@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.SubjectDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.SubjectDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="subjectName" jdbcType="VARCHAR" property="subjectName" />
+    <result column="teacherId" jdbcType="BIGINT" property="teacherId" />
+    <result column="states" jdbcType="CHAR" property="states" />
+    <result column="publishDate" jdbcType="TIMESTAMP" property="publishDate" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="picUrl" jdbcType="VARCHAR" property="picUrl" />
+    <result column="freeCourseFlag" jdbcType="CHAR" property="freeCourseFlag" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="teacherInterduce" jdbcType="LONGVARCHAR" property="teacherInterduce" />
+    <result column="teacherInterduceDetail" jdbcType="LONGVARCHAR" property="teacherInterduceDetail" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.audioapp.cms.dto.SubjectDTO">
+    <result column="subjectIntroduce" jdbcType="LONGVARCHAR" property="subjectIntroduce" />
+  </resultMap>
+  
+  <resultMap id="BaseResultListMap" type="com.audioapp.cms.dto.SubjectListDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="subjectName" jdbcType="VARCHAR" property="subjectName" />
+    <result column="teacherId" jdbcType="BIGINT" property="teacherId" />
+    <result column="states" jdbcType="CHAR" property="states" />
+    <result column="publishDate" jdbcType="TIMESTAMP" property="publishDate" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="picUrl" jdbcType="VARCHAR" property="picUrl" />
+    <result column="freeCourseFlag" jdbcType="CHAR" property="freeCourseFlag" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="realName" jdbcType="VARCHAR" property="realName" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="statesStr" jdbcType="VARCHAR" property="statesStr" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="BaseResultDetailMap" type="com.audioapp.cms.dto.SubjectDetailDTO">
+    <result column="realName" jdbcType="VARCHAR" property="realName" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    id, subjectName, teacherId, states, publishDate, price, picUrl, freeCourseFlag, createdDate, 
+    createdBy, updatedDate, updatedBy
+  </sql>
+  
+  <select id="getSubjectList" parameterType="map" resultMap="BaseResultListMap">
+    select ts.id, ts.subjectName, ts.teacherId, ts.states, ts.publishDate, ts.price, ts.picUrl, ts.freeCourseFlag, ts.createdDate,
+         ts.createdBy, ts.updatedDate, ts.updatedBy, tu.userName, tu.realName,
+                case ts.states when '0' then '待提交' when '1' then '已发布' when '2' then '待审核' when '3' then '已删除' else '' end as statesStr
+    from t_subject ts, t_user tu
+    where ts.teacherId = tu.id
+    <if test="teacherId != null and teacherId != ''">
+      and ts.teacherId = #{teacherId, jdbcType=VARCHAR}
+    </if>
+    order by ts.id desc
+  </select>
+  
+  
+  <sql id="Blob_Column_List">
+    subjectIntroduce
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_subject
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectDetailByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultDetailMap">
+    select ts.id, ts.subjectName, ts.teacherId, ts.states, ts.publishDate, ts.price, ts.picUrl, ts.freeCourseFlag, ts.teacherInterduce,
+      tu.userName, tu.realName, ts.subjectIntroduce, ts.subjectIntroduceDetail
+	from t_subject ts, t_user tu
+    where ts.teacherId = tu.id and ts.id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_subject
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.SubjectDTO">
+    insert into t_subject (id, subjectName, teacherId, 
+      states, publishDate, price, 
+      picUrl, freeCourseFlag, createdDate, 
+      createdBy, updatedDate, updatedBy, 
+      subjectIntroduce, subjectIntroduceDetail,
+      teacherInterduce)
+    values (#{id,jdbcType=BIGINT}, #{subjectName,jdbcType=VARCHAR}, #{teacherId,jdbcType=BIGINT}, 
+      #{states,jdbcType=CHAR}, #{publishDate,jdbcType=TIMESTAMP}, #{price,jdbcType=INTEGER}, 
+      #{picUrl,jdbcType=VARCHAR}, #{freeCourseFlag,jdbcType=CHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{subjectIntroduce,jdbcType=LONGVARCHAR},#{subjectIntroduceDetail,jdbcType=LONGVARCHAR},
+      #{teacherInterduce,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.SubjectDTO">
+    insert into t_subject
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="subjectName != null">
+        subjectName,
+      </if>
+      <if test="teacherId != null">
+        teacherId,
+      </if>
+      <if test="states != null">
+        states,
+      </if>
+      <if test="publishDate != null">
+        publishDate,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="picUrl != null">
+        picUrl,
+      </if>
+      <if test="freeCourseFlag != null">
+        freeCourseFlag,
+      </if>
+      <if test="createdDate != null">
+        createdDate,
+      </if>
+      <if test="createdBy != null">
+        createdBy,
+      </if>
+      <if test="updatedDate != null">
+        updatedDate,
+      </if>
+      <if test="updatedBy != null">
+        updatedBy,
+      </if>
+      <if test="subjectIntroduce != null">
+        subjectIntroduce,
+      </if>
+      <if test="subjectIntroduceDetail != null">
+        subjectIntroduceDetail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="subjectName != null">
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null">
+        #{teacherId,jdbcType=BIGINT},
+      </if>
+      <if test="states != null">
+        #{states,jdbcType=CHAR},
+      </if>
+      <if test="publishDate != null">
+        #{publishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="freeCourseFlag != null">
+        #{freeCourseFlag,jdbcType=CHAR},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null">
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectIntroduce != null">
+        #{subjectIntroduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="subjectIntroduceDetail != null">
+        #{subjectIntroduceDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.SubjectDTO">
+    update t_subject
+    <set>
+      <if test="subjectName != null">
+        subjectName = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null">
+        teacherId = #{teacherId,jdbcType=BIGINT},
+      </if>
+      <if test="states != null">
+        states = #{states,jdbcType=CHAR},
+      </if>
+      publishDate = #{publishDate,jdbcType=TIMESTAMP},
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        picUrl = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="freeCourseFlag != null">
+        freeCourseFlag = #{freeCourseFlag,jdbcType=CHAR},
+      </if>
+      <if test="createdDate != null">
+        createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        createdBy = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null">
+        updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectIntroduce != null">
+        subjectIntroduce = #{subjectIntroduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="subjectIntroduceDetail != null">
+        subjectIntroduceDetail = #{subjectIntroduceDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.audioapp.cms.dto.SubjectDTO">
+    update t_subject
+    set subjectName = #{subjectName,jdbcType=VARCHAR},
+      teacherId = #{teacherId,jdbcType=BIGINT},
+      states = #{states,jdbcType=CHAR},
+      publishDate = #{publishDate,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=INTEGER},
+      picUrl = #{picUrl,jdbcType=VARCHAR},
+      freeCourseFlag = #{freeCourseFlag,jdbcType=CHAR},
+      createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      createdBy = #{createdBy,jdbcType=VARCHAR},
+      updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      subjectIntroduce = #{subjectIntroduce,jdbcType=LONGVARCHAR},
+      subjectIntroduceDetail = #{subjectIntroduceDetail,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.SubjectDTO">
+    update t_subject
+    set subjectName = #{subjectName,jdbcType=VARCHAR},
+      teacherId = #{teacherId,jdbcType=BIGINT},
+      states = #{states,jdbcType=CHAR},
+      publishDate = #{publishDate,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=INTEGER},
+      picUrl = #{picUrl,jdbcType=VARCHAR},
+      freeCourseFlag = #{freeCourseFlag,jdbcType=CHAR},
+      createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      createdBy = #{createdBy,jdbcType=VARCHAR},
+      updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      subjectIntroduce = #{subjectIntroduce,jdbcType=LONGVARCHAR},
+      subjectIntroduceDetail = #{subjectIntroduceDetail,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

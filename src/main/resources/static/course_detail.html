@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <head>
+    <!-- Switchery -->
+    <link href="../cms/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../cms/build/css/custom.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>课程详情</h3>
+      </div>
+      <div class="title_right">
+       	<div class="pull-right">
+       		<a onclick="goCourse()" class="btn btn-app">
+       			<i class="fa fa-file"></i>返回
+       		</a>
+       	</div>
+       </div>
+    </div>
+    
+    <div class="clearfix"></div>
+
+	<div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_content">
+            <br />
+            <div data-parsley-validate class="form-horizontal form-label-left">
+              <input type="hidden" id="searchSubjectId" th:value="${searchSubjectId}">
+			  <div class="form-group">
+			  	<label class="control-label col-md-2 col-sm-2 col-xs-12" for="courseTypeAudio">课程类型 : </label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+	                <p style="padding-top: 7px;">
+                      音频 : <input disabled="disabled" type="radio" class="flat" name="courseType" id="courseTypeAudio" value="1" checked="" required />
+                      &nbsp;&nbsp;&nbsp;图文 : <input disabled="disabled" type="radio" class="flat" name="courseType" id="courseTypePic" value="2" />
+	                </p>
+	            </div>
+	            <label for="freeFlag" class="control-label col-md-1 col-sm-1 col-xs-12">可试听</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+					<input disabled="disabled" th:checked="${course.freeFlag} eq '1'" id="freeFlag" type="checkbox" class="js-switch"/>
+                </div>
+               </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subjectName">所属专栏</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <input disabled="disabled" th:value="${course.subjectName}" type="text" id="subjectName" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12" for="courseName">标题
+                </label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <input disabled="disabled" th:value="${course.courseName}" type="text" id="courseName" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <label class="control-label col-md-1 col-sm-1 col-xs-12" for="sort">排序
+                </label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <input type="number" id="sort" th:value="${course.sort}" name="sort" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="coursePic" class="control-label col-md-2 col-sm-2 col-xs-12">封面</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <img id="coursePic" width="400" hight="300" name="subjectPic" th:src="${course.picUrl}" class="img">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="audioUrl" class="control-label col-md-2 col-sm-2 col-xs-12">音频</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <input type="hidden" id="audioUrl">
+                  <audio controls="controls" preload="auto">
+                    <source th:src="${course.audioUrl}" type="audio/mpeg">
+                  </audio>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12">正文</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <div id="editor-one"></div>
+                  <input id="courseContent" type="hidden" th:value="${course.courseContent}">
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-6">
+                  <button class="btn btn-primary" type="button" onclick="goCourse()">返回</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>   
+    <!-- Switchery -->
+    <script src="../cms/vendors/switchery/dist/switchery.min.js"></script>
+    <!-- wangEditor -->
+    <script src="../cms/vendors/wangEditor/release/wangEditor.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../cms/build/js/custom.js"></script>
+    <script src="../cms/js/course.js"></script>
+    <script src="../cms/js/course_detail.js"></script>
+  </body>
+</html>

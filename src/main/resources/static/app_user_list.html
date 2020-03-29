@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <body class="nav-md">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>用户管理</h3>
+        </div>
+      </div>
+        
+      <div class="clearfix"></div>
+        
+      <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>用户列表</h2>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+              <table id="datatable" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>账号</th>
+                    <th>昵称</th>
+                    <th>注册时间</th>
+                    <th>最近登录</th>
+                    <th>注册方式</th>
+                    <th>推荐人账号</th>
+                    <th>累计已获免费课程</th>
+                    <th>已使用免费课程</th>
+                    <th>订阅专栏数</th>
+                    <th>订阅金额</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="appUser : ${appUserList}">
+                    <td th:text="${appUser.userName}">Tiger Nixon</td>
+                    <td th:text="${appUser.nickName}">System Architect</td>
+                    <td th:text="${appUser.registerTimeStr}">Edinburgh</td>
+                    <td th:text="${appUser.registerTimeStr}">61</td>
+                    <td th:text="${appUser.registerTypeStr}">2011/04/25</td>
+                    <td th:text="${appUser.refree}">2011/04/25</td>
+                    <td th:text="${appUser.freeNum}">2011/04/25</td>
+                    <td th:text="${appUser.usedFreeNum}">2011/04/25</td>
+                    <td th:text="${appUser.subscribeSubjectNum}">2011/04/25</td>
+                    <td th:text="${appUser.subscribeTotalPrice}">2011/04/25</td>
+                    <td>
+                        <a class="btn btn-info btn-xs" th:onclick="'javascript:subscribDetail(\''+ ${appUser.userName}+'\')'"><i class="fa fa-search"></i> 订阅记录</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          </div>
+      </div>
+	</div>
+    <script src="../cms/js/appuser.js"></script>
+  </body>
+</html>

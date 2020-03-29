@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.AppOrderSuccessDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.AppOrderSuccessDTO">
+    <id column="orderId" jdbcType="BIGINT" property="orderId" />
+    <result column="subjectId" jdbcType="BIGINT" property="subjectId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="tradeNo" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="tradeType" jdbcType="INTEGER" property="tradeType" />
+    <result column="totalAmount" jdbcType="INTEGER" property="totalAmount" />
+    <result column="realAmount" jdbcType="INTEGER" property="realAmount" />
+    <result column="tradeDate" jdbcType="DATE" property="tradeDate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="tradeTime" jdbcType="VARCHAR" property="tradeTime" />
+  </resultMap>
+  
+  <resultMap id="BaseResultListMap" type="com.audioapp.cms.dto.SubscribeListDTO">
+    <id column="orderId" jdbcType="BIGINT" property="orderId" />
+    <result column="subjectId" jdbcType="BIGINT" property="subjectId" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="tradeNo" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="tradeType" jdbcType="INTEGER" property="tradeType" />
+    <result column="totalAmount" jdbcType="INTEGER" property="totalAmount" />
+    <result column="realAmount" jdbcType="INTEGER" property="realAmount" />
+    <result column="tradeDate" jdbcType="DATE" property="tradeDate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="tradeTime" jdbcType="VARCHAR" property="tradeTime" />
+    <result column="subjectName" jdbcType="VARCHAR" property="subjectName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    orderId, subjectId, userName, tradeNo, tradeType, totalAmount, realAmount, tradeDate, 
+    createDate, updateDate, createdBy, updatedBy, tradeTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from app_order_success
+    where orderId = #{orderId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="getSubscribeList" parameterType="String" resultMap="BaseResultListMap">
+    SELECT
+        aos.orderId,
+        aos.subjectId,
+        aos.userName,
+        aos.tradeNo,
+        aos.tradeType,
+        IFNULL( aos.totalAmount, 0 ) AS totalAmount,
+        IFNULL( aos.realAmount, 0 ) AS realAmount,
+        aos.tradeDate,
+        aos.createDate,
+        aos.updateDate,
+        aos.createdBy,
+        aos.updatedBy,
+        aos.tradeTime,
+        ts.subjectName
+    FROM
+        app_order_success aos,
+        t_subject ts
+    WHERE
+        aos.subjectId = ts.id
+	AND aos.userName = #{userName, jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from app_order_success
+    where orderId = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.AppOrderSuccessDTO">
+    insert into app_order_success (orderId, subjectId, userName, 
+      tradeNo, tradeType, totalAmount, 
+      realAmount, tradeDate, createDate, 
+      updateDate, createdBy, updatedBy, 
+      tradeTime)
+    values (#{orderId,jdbcType=BIGINT}, #{subjectId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, 
+      #{tradeNo,jdbcType=VARCHAR}, #{tradeType,jdbcType=INTEGER}, #{totalAmount,jdbcType=INTEGER}, 
+      #{realAmount,jdbcType=INTEGER}, #{tradeDate,jdbcType=DATE}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{tradeTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.AppOrderSuccessDTO">
+    insert into app_order_success
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        orderId,
+      </if>
+      <if test="subjectId != null">
+        subjectId,
+      </if>
+      <if test="userName != null">
+        userName,
+      </if>
+      <if test="tradeNo != null">
+        tradeNo,
+      </if>
+      <if test="tradeType != null">
+        tradeType,
+      </if>
+      <if test="totalAmount != null">
+        totalAmount,
+      </if>
+      <if test="realAmount != null">
+        realAmount,
+      </if>
+      <if test="tradeDate != null">
+        tradeDate,
+      </if>
+      <if test="createDate != null">
+        createDate,
+      </if>
+      <if test="updateDate != null">
+        updateDate,
+      </if>
+      <if test="createdBy != null">
+        createdBy,
+      </if>
+      <if test="updatedBy != null">
+        updatedBy,
+      </if>
+      <if test="tradeTime != null">
+        tradeTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectId != null">
+        #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null">
+        #{tradeType,jdbcType=INTEGER},
+      </if>
+      <if test="totalAmount != null">
+        #{totalAmount,jdbcType=INTEGER},
+      </if>
+      <if test="realAmount != null">
+        #{realAmount,jdbcType=INTEGER},
+      </if>
+      <if test="tradeDate != null">
+        #{tradeDate,jdbcType=DATE},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeTime != null">
+        #{tradeTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.AppOrderSuccessDTO">
+    update app_order_success
+    <set>
+      <if test="subjectId != null">
+        subjectId = #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null">
+        tradeType = #{tradeType,jdbcType=INTEGER},
+      </if>
+      <if test="totalAmount != null">
+        totalAmount = #{totalAmount,jdbcType=INTEGER},
+      </if>
+      <if test="realAmount != null">
+        realAmount = #{realAmount,jdbcType=INTEGER},
+      </if>
+      <if test="tradeDate != null">
+        tradeDate = #{tradeDate,jdbcType=DATE},
+      </if>
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        createdBy = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedBy != null">
+        updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeTime != null">
+        tradeTime = #{tradeTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where orderId = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.AppOrderSuccessDTO">
+    update app_order_success
+    set subjectId = #{subjectId,jdbcType=BIGINT},
+      userName = #{userName,jdbcType=VARCHAR},
+      tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      tradeType = #{tradeType,jdbcType=INTEGER},
+      totalAmount = #{totalAmount,jdbcType=INTEGER},
+      realAmount = #{realAmount,jdbcType=INTEGER},
+      tradeDate = #{tradeDate,jdbcType=DATE},
+      createDate = #{createDate,jdbcType=TIMESTAMP},
+      updateDate = #{updateDate,jdbcType=TIMESTAMP},
+      createdBy = #{createdBy,jdbcType=VARCHAR},
+      updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      tradeTime = #{tradeTime,jdbcType=VARCHAR}
+    where orderId = #{orderId,jdbcType=BIGINT}
+  </update>
+</mapper>

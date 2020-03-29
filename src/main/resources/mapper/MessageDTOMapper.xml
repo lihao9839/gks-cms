@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.MessageDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.MessageDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="sendDate" jdbcType="TIMESTAMP" property="sendDate" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="allFlag" jdbcType="VARCHAR" property="allFlag" />
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.audioapp.cms.dto.MessageDTO">
+    <result column="receiveText" jdbcType="LONGVARCHAR" property="receiveText" />
+  </resultMap>
+  
+  <resultMap id="BaseResultListMap" type="com.audioapp.cms.dto.MessageListDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="sendDate" jdbcType="TIMESTAMP" property="sendDate" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="allFlag" jdbcType="VARCHAR" property="allFlag" />
+    <result column="statusStr" jdbcType="VARCHAR" property="statusStr" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, title, content, status, sendDate, createdDate, createdBy, updatedDate, updatedBy, 
+    allFlag
+  </sql>
+  <sql id="Blob_Column_List">
+    receiveText
+  </sql>
+  
+  <select id="getMessageList" parameterType="map" resultMap="BaseResultListMap">
+  	select 
+    <include refid="Base_Column_List" />
+    , case status when '0' then '未发送' when '1' then '已发送' when 'X' then '已取消' else '' end as statusStr
+    from t_message
+    where 1=1
+    <if test="status != null and status != ''">
+        and status = #{status}
+    </if>
+    <if test="keyWord != null and keyWord !=''">
+        and title LIKE CONCAT('%',#{keyWord},'%')
+    </if>
+    <if test="startDate != null">
+      and sendDate &gt; #{startDate}
+    </if>
+    <if test="endDate != null">
+      and sendDate &lt; #{endDate}
+    </if>
+  </select>
+  
+  <select id="selectListDTOByPrimaryKey" parameterType="long" resultMap="BaseResultListMap">
+    select 
+    <include refid="Base_Column_List" />
+    , case status when '0' then '未发送' when '1' then '已发送' when 'X' then '已取消' else '' end as statusStr
+    from t_message
+    where id = #{id}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_message
+    where id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_message
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.MessageDTO">
+    insert into t_message (id, title, content, 
+      status, sendDate, createdDate, 
+      createdBy, updatedDate, updatedBy, 
+      allFlag, receiveText)
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{sendDate,jdbcType=TIMESTAMP}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{allFlag,jdbcType=VARCHAR}, #{receiveText,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.MessageDTO">
+    insert into t_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="sendDate != null">
+        sendDate,
+      </if>
+      <if test="createdDate != null">
+        createdDate,
+      </if>
+      <if test="createdBy != null">
+        createdBy,
+      </if>
+      <if test="updatedDate != null">
+        updatedDate,
+      </if>
+      <if test="updatedBy != null">
+        updatedBy,
+      </if>
+      <if test="allFlag != null">
+        allFlag,
+      </if>
+      <if test="receiveText != null">
+        receiveText,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="sendDate != null">
+        #{sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null">
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="allFlag != null">
+        #{allFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveText != null">
+        #{receiveText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.MessageDTO">
+    update t_message
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="sendDate != null">
+        sendDate = #{sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdDate != null">
+        createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        createdBy = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null">
+        updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="allFlag != null">
+        allFlag = #{allFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveText != null">
+        receiveText = #{receiveText,jdbcType=VARCHAR},
+      </if>
+      <if test="messageId != null">
+        messageId = #{messageId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.audioapp.cms.dto.MessageDTO">
+    update t_message
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      sendDate = #{sendDate,jdbcType=TIMESTAMP},
+      createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      createdBy = #{createdBy,jdbcType=VARCHAR},
+      updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      allFlag = #{allFlag,jdbcType=VARCHAR},
+      receiveText = #{receiveText,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.MessageDTO">
+    update t_message
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      sendDate = #{sendDate,jdbcType=TIMESTAMP},
+      createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      createdBy = #{createdBy,jdbcType=VARCHAR},
+      updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      allFlag = #{allFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

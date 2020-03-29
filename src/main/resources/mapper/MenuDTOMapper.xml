@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.MenuDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.MenuDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="menuCode" jdbcType="VARCHAR" property="menuCode" />
+    <result column="menuName" jdbcType="VARCHAR" property="menuName" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="parentCode" jdbcType="VARCHAR" property="parentCode" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="menuUrl" jdbcType="VARCHAR" property="menuUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, menuCode, menuName, level, parentCode, icon, menuUrl
+  </sql>
+  <select id="getMenuList" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from t_menu
+  </select>
+  
+  <select id="getMenuListByParentCode" parameterType="map" resultMap="BaseResultMap">
+	SELECT
+		tm.id,
+		tm.menuCode,
+		tm.menuName,
+		tm.LEVEL,
+		tm.parentCode,
+		tm.icon,
+		tm.menuUrl 
+	FROM
+		t_menu tm,
+		t_role_menu trm 
+	WHERE
+		1 = 1 
+		AND tm.menuCode = trm.menuCode 
+		AND tm.parentCode = #{parentCode}
+		AND trm.roleType = #{roleType}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_menu
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_menu
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.MenuDTO">
+    insert into t_menu (id, menuCode, menuName, 
+      level, parentCode, icon, 
+      menuUrl)
+    values (#{id,jdbcType=BIGINT}, #{menuCode,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{menuUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.MenuDTO">
+    insert into t_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="menuCode != null">
+        menuCode,
+      </if>
+      <if test="menuName != null">
+        menuName,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="parentCode != null">
+        parentCode,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="menuUrl != null">
+        menuUrl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="menuCode != null">
+        #{menuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null">
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.MenuDTO">
+    update t_menu
+    <set>
+      <if test="menuCode != null">
+        menuCode = #{menuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        menuName = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        parentCode = #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null">
+        menuUrl = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.MenuDTO">
+    update t_menu
+    set menuCode = #{menuCode,jdbcType=VARCHAR},
+      menuName = #{menuName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      parentCode = #{parentCode,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      menuUrl = #{menuUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

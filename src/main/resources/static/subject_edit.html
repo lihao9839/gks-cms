@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Switchery -->
+    <link href="../cms/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- Dropzone.js -->
+    <link href="../cms/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../cms/build/css/custom.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>编辑专栏</h3>
+      </div>
+      <div class="title_right">
+        <div class="pull-right">
+          <a onclick="goSubject()" class="btn btn-app">
+            <i class="fa fa-file"></i>返回
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_content">
+            <br />
+            <div data-parsley-validate class="form-horizontal form-label-left">
+              <input id="subjectId" th:value="${subject.id}" type="hidden">
+              <div class="form-group">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subjectName">专栏名称</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <input type="text" id="subjectName" required="required" class="form-control col-md-7 col-xs-12" th:value="${subject.subjectName}">
+                </div>
+                <label class="control-label col-md-1 col-sm-1 col-xs-12" for="realName">主讲人姓名</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <select id="realName" class="select2_single form-control" tabindex="-1" onclick="syncUserName()">
+                    <option th:value="${subject.userName + subject.teacherId}" th:text="${subject.realName}"></option>
+                    <option th:each="user : ${userList}" th:value="${user.userName + user.id}" th:text="${user.realName}"></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-2 col-sm-2 col-xs-12" for="userIntroduce">主讲人介绍
+                </label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <input type="text" id="userIntroduce" name="last-name" required="required" class="form-control col-md-7 col-xs-12" th:value="${subject.teacherInterduce}">
+                </div>
+                <label class="control-label col-md-1 col-sm-1 col-xs-12" for="userName">主讲人账号
+                </label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <input type="text" id="userName" class="form-control col-md-7 col-xs-12" disabled="disabled" th:value="${subject.userName}">
+                  <input type="text" id="teacherId" style="display:none;" th:value="${subject.teacherId}" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="subjectIntroduce" class="control-label col-md-2 col-sm-2 col-xs-12">专栏简介</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <textarea id="subjectIntroduce" class="form-control" name="subjectIntroduce" th:text="${subject.subjectIntroduce}"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="subjectDropzone" class="control-label col-md-2 col-sm-2 col-xs-12">专栏图片</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <div id="subjectDropzone" class="dropzone"></div>
+                  <input type="hidden" id="subjectPicUrl" th:value="${subject.picUrl}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="subscribePrice" class="control-label col-md-2 col-sm-2 col-xs-12">订阅金额</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <input type="number" id="subscribePrice" class="form-control col-md-7 col-xs-12" name="subscribePrice"
+                         th:value="${subject.price}" th:disabled="${roleType eq '1'}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="freeCourseFlag" class="control-label col-md-2 col-sm-2 col-xs-12">分享得免费课程</label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <input id="freeCourseFlag" type="checkbox" class="js-switch" th:checked="${subject.freeCourseFlag eq '1'}"
+                  th:disabled="${roleType eq '1'}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="freeCourseFlag" class="control-label col-md-2 col-sm-2 col-xs-12">专栏介绍（详细）</label>
+                <div class="col-md-9 col-sm-9 col-xs-12">
+                  <div id="editor-one"></div>
+                  <input id="subjectIntroduceDetail" th:value="${subject.subjectIntroduceDetail}" type="hidden">
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-5">
+                  <button class="btn btn-primary" type="button" onclick="goSubject()">返回</button>
+                  <button id="btnEditSubject"class="btn btn-success" type="button" onclick="editSubject()">更新</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Switchery -->
+    <script src="../cms/vendors/switchery/dist/switchery.min.js"></script>
+    <!-- Dropzone.js -->
+    <script src="../cms/vendors/dropzone/dist/dropzone.js"></script>
+    <!-- wangEditor-->
+    <script src="../cms/vendors/wangEditor/release/wangEditor.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../cms/build/js/custom.js"></script>
+    <script src="../cms/js/subject.js"></script>
+    <script src="../cms/js/subject_edit.js"></script>
+  </body>
+</html>

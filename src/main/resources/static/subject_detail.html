@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <head>
+    <!-- Switchery -->
+    <link href="../cms/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- Dropzone.js -->
+    <link href="../cms/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../cms/build/css/custom.css" rel="stylesheet">
+  </head>
+
+
+  <body class="nav-md">
+  	<div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>专栏详情</h3>
+          </div>
+          <div class="title_right">
+          	<div class="pull-right">
+          		<a onclick="goSubject()" class="btn btn-app">
+          			<i class="fa fa-file"></i>返回
+          		</a>
+          	</div>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_content">
+              <br />
+              <div data-parsley-validate class="form-horizontal form-label-left">
+                <div class="form-group">
+                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subjectName">专栏名称</label>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <input type="text" id="subjectName" class="form-control col-md-7 col-xs-12" disabled="disabled"
+                           th:value="${subject.subjectName}">
+                  </div>
+                  <label class="control-label col-md-1 col-sm-1 col-xs-12" for="realName">主讲人姓名</label>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <input type="text" id="realName" class="form-control col-md-7 col-xs-12" disabled="disabled"
+                           th:value="${subject.realName}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="teacherIntroduce">主讲人介绍
+                  </label>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <input type="text" id="teacherIntroduce" class="form-control col-md-7 col-xs-12" disabled="disabled"
+                           th:value="${subject.teacherInterduce}">
+                  </div>
+                  <label class="control-label col-md-1 col-sm-1 col-xs-12" for="userName">主讲人账号
+                  </label>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <input type="text" id="userName" class="form-control col-md-7 col-xs-12" disabled="disabled"
+                           th:value="${subject.userName}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="subjectIntroduce" class="control-label col-md-2 col-sm-2 col-xs-12">专栏简介</label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <textarea id="subjectIntroduce" disabled="disabled" class="form-control"
+                              th:text="${subject.subjectIntroduce}"></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="subjectPic" class="control-label col-md-2 col-sm-2 col-xs-12">专栏图片</label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <img id="subjectPic" width="400" hight="300" name="subjectPic" th:src="${subject.picUrl}" class="img">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="subscribePrice" class="control-label col-md-2 col-sm-2 col-xs-12">订阅金额</label>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <input type="number" id="subscribePrice" class="form-control col-md-7 col-xs-12" disabled="disabled"
+                           th:value="${subject.price}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-2 col-sm-2 col-xs-12">分享得免费课程</label>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <input id="freeCourseFlag" type="checkbox" class="js-switch"
+                           th:checked="${subject.freeCourseFlag eq '1'}" disabled="disabled"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="freeCourseFlag" class="control-label col-md-2 col-sm-2 col-xs-12">专栏介绍（详细）</label>
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <div id="editor-one"></div>
+                    <input id="subjectIntroduceDetail" th:value="${subject.subjectIntroduceDetail}" type="hidden">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+	</div>
+    <!-- Switchery -->
+    <script src="../cms/vendors/switchery/dist/switchery.min.js"></script>
+    <!-- wangEditor -->
+    <script src="../cms/vendors/wangEditor/release/wangEditor.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../cms/build/js/custom.js"></script>
+    <script src="../cms/js/subject_detail.js"></script>
+  </body>
+</html>

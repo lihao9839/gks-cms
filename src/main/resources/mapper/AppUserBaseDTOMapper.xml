@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.AppUserBaseDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.AppUserBaseDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
+    <result column="profileUrl" jdbcType="VARCHAR" property="profileurl" />
+    <result column="signature" jdbcType="VARCHAR" property="signature" />
+    <result column="refree" jdbcType="VARCHAR" property="refree" />
+    <result column="freeNum" jdbcType="INTEGER" property="freenum" />
+    <result column="registerTime" jdbcType="TIMESTAMP" property="registertime" />
+    <result column="registerType" jdbcType="INTEGER" property="registertype" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updatedate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userName, nickName, profileUrl, signature, refree, freeNum, registerTime, registerType, 
+    createDate, updateDate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from app_user_base
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from app_user_base
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.AppUserBaseDTO">
+    insert into app_user_base (id, userName, nickName, 
+      profileUrl, signature, refree, 
+      freeNum, registerTime, registerType, 
+      createDate, updateDate)
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{profileurl,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, #{refree,jdbcType=VARCHAR}, 
+      #{freenum,jdbcType=INTEGER}, #{registertime,jdbcType=TIMESTAMP}, #{registertype,jdbcType=INTEGER}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{updatedate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.AppUserBaseDTO">
+    insert into app_user_base
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="nickname != null">
+        nickName,
+      </if>
+      <if test="profileurl != null">
+        profileUrl,
+      </if>
+      <if test="signature != null">
+        signature,
+      </if>
+      <if test="refree != null">
+        refree,
+      </if>
+      <if test="freenum != null">
+        freeNum,
+      </if>
+      <if test="registertime != null">
+        registerTime,
+      </if>
+      <if test="registertype != null">
+        registerType,
+      </if>
+      <if test="createdate != null">
+        createDate,
+      </if>
+      <if test="updatedate != null">
+        updateDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="profileurl != null">
+        #{profileurl,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="refree != null">
+        #{refree,jdbcType=VARCHAR},
+      </if>
+      <if test="freenum != null">
+        #{freenum,jdbcType=INTEGER},
+      </if>
+      <if test="registertime != null">
+        #{registertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registertype != null">
+        #{registertype,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedate != null">
+        #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.AppUserBaseDTO">
+    update app_user_base
+    <set>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickName = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="profileurl != null">
+        profileUrl = #{profileurl,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="refree != null">
+        refree = #{refree,jdbcType=VARCHAR},
+      </if>
+      <if test="freenum != null">
+        freeNum = #{freenum,jdbcType=INTEGER},
+      </if>
+      <if test="registertime != null">
+        registerTime = #{registertime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registertype != null">
+        registerType = #{registertype,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null">
+        createDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedate != null">
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.AppUserBaseDTO">
+    update app_user_base
+    set userName = #{username,jdbcType=VARCHAR},
+      nickName = #{nickname,jdbcType=VARCHAR},
+      profileUrl = #{profileurl,jdbcType=VARCHAR},
+      signature = #{signature,jdbcType=VARCHAR},
+      refree = #{refree,jdbcType=VARCHAR},
+      freeNum = #{freenum,jdbcType=INTEGER},
+      registerTime = #{registertime,jdbcType=TIMESTAMP},
+      registerType = #{registertype,jdbcType=INTEGER},
+      createDate = #{createdate,jdbcType=TIMESTAMP},
+      updateDate = #{updatedate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

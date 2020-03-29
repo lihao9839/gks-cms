@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <body class="nav-md">
+  <div class="">
+    <!-- page content -->
+      <!-- top tiles -->
+      <div class="row tile_count">
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <span class="count_top"><i class="fa fa-user"></i> 总用户数</span>
+          <div class="count green" th:text="${totalData.totalUsers}"></div>
+          <!--<span class="count_bottom"><i class="green">4% </i> 同比上周</span>-->
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <span class="count_top"><i class="fa fa-user"></i> 昨日新增用户数</span>
+          <div class="count" th:text="${totalData.yesNewUsers}">123.50</div>
+          <!--<span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> 同比上周</span>-->
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <span class="count_top"><i class="fa fa-user"></i> 昨日活跃用户数</span>
+          <div class="count" th:text="${totalData.yesActUsers}">2,500</div>
+          <!--<span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> 同比上周</span>-->
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <span class="count_top"><i class="fa fa-user"></i> 7日活跃用户数</span>
+          <div class="count" th:text="${totalData.sevenDayAct}">4,567</div>
+          <!--<span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> 同比上周</span>-->
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <span class="count_top"><i class="fa fa-user"></i> 30日活跃用户数</span>
+          <div class="count" th:text="${totalData.monthAct}">4,567</div>
+          <!--<span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> 同比上周</span>-->
+        </div>
+      </div>
+      <div class="row tile_count">
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <span class="count_top"><i class="fa fa-jpy"></i> 总订阅金额</span>
+          <div class="count green" th:text="${totalData.totalSubAmt}"></div>
+          <!--<span class="count_bottom"><i class="green">4% </i> 同比上周</span>-->
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <span class="count_top"><i class="fa fa-jpy"></i> 昨日订阅金额</span>
+          <div class="count" th:text="${totalData.yesSubAmt}">123.50</div>
+          <!--<span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> 同比上周</span>-->
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+              <div class="x_title">
+                  <h2>查询条件</h2>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                  <br />
+                  <div id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                      <div class="form-group">
+                          <label for="startDate" class="control-label col-md-2 col-sm-2 col-xs-12">开始时间</label>
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <div class="form-group">
+                                  <div class='input-group date' id='myDatepickerStart'>
+                                      <input type='text' class="form-control" id='startDate' th:value="${startDate}">
+                                      <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                          </span>
+                                  </div>
+                              </div>
+                          </div>
+                          <label for="endDate" class="control-label col-md-1 col-sm-1 col-xs-12">结束时间</label>
+                          <div class="col-md-4 col-sm-4 col-xs-12">
+                              <div class="form-group">
+                                  <div class='input-group date' id='myDatepickerEnd'>
+                                      <input type='text' class="form-control" id='endDate' th:value="${endDate}"/>
+                                      <span class="input-group-addon">
+                                           <span class="glyphicon glyphicon-calendar"></span>
+                                          </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                          <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-5">
+                              <button class="btn btn-primary" onclick="resetSearch()">重置</button>
+                              <button class="btn btn-success" onclick="getDataList()">查询</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_content">
+                      <table id="datatable" class="table table-striped table-bordered">
+                          <thead>
+                          <tr>
+                              <th>注册人数</th>
+                              <th>APP注册</th>
+                              <th>H5注册</th>
+                              <th>活跃人数</th>
+                              <th>学习次数</th>
+                              <th>订阅人数</th>
+                              <th>订阅次数</th>
+                              <th>订阅金额</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr>
+                              <td th:text="${totalListData.regUsers}"></td>
+                              <td th:text="${totalListData.appUsers}"></td>
+                              <td th:text="${totalListData.h5Users}"></td>
+                              <td th:text="${totalListData.actUsers}"></td>
+                              <td th:text="${totalListData.lenTimes}"></td>
+                              <td th:text="${totalListData.subUsers}"></td>
+                              <td th:text="${totalListData.subTimes}"></td>
+                              <td th:text="${totalListData.subAmt}"></td>
+                          </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+    </div>
+  </div>
+    <!-- Custom Theme Scripts -->
+    <script src="../cms/build/js/custom.js"></script>
+    <script src="../cms/js/total_data.js"></script>
+
+  <script>
+      $('#myDatepickerStart').datetimepicker();
+      $('#myDatepickerEnd').datetimepicker();
+  </script>
+  </body>
+</html>

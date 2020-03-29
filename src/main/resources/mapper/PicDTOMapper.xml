@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.PicDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.PicDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="picUrl" jdbcType="VARCHAR" property="picUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, picUrl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_picture
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_picture
+    where type = #{type,jdbcType=CHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_picture
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.PicDTO">
+    insert into t_picture (id, type, picUrl)
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=CHAR}, #{picUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.PicDTO">
+    insert into t_picture
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="picUrl != null">
+        picUrl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.PicDTO">
+    update t_picture
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="picUrl != null">
+        picUrl = #{picUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.PicDTO">
+    update t_picture
+    set type = #{type,jdbcType=CHAR},
+      picUrl = #{picUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

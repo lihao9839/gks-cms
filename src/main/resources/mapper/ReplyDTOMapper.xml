@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.ReplyDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.ReplyDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="objectId" jdbcType="BIGINT" property="objectId" />
+    <result column="replayContent" jdbcType="VARCHAR" property="replayContent" />
+    <result column="replayStatus" jdbcType="CHAR" property="replayStatus" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="thumbNum" jdbcType="DECIMAL" property="thumbNum" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+  </resultMap>
+
+  <resultMap id="BaseListResultMap" type="com.audioapp.cms.dto.ReplyListDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="objectId" jdbcType="BIGINT" property="objectId" />
+    <result column="replayContent" jdbcType="VARCHAR" property="replayContent" />
+    <result column="replayStatus" jdbcType="CHAR" property="replayStatus" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="thumbNum" jdbcType="DECIMAL" property="thumbNum" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickName" />
+    <result column="profileUrl" jdbcType="VARCHAR" property="profileUrl" />
+  </resultMap>
+
+  <resultMap id="BaseSubjectListResultMap" type="com.audioapp.cms.dto.ReplyListDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="objectId" jdbcType="BIGINT" property="objectId" />
+    <result column="replayContent" jdbcType="VARCHAR" property="replayContent" />
+    <result column="replayStatus" jdbcType="CHAR" property="replayStatus" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="thumbNum" jdbcType="DECIMAL" property="thumbNum" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickName" />
+    <result column="replayStatusStr" jdbcType="VARCHAR" property="replayStatusStr" />
+    <result column="statusStr" jdbcType="VARCHAR" property="statusStr" />
+    <result column="subjectName" jdbcType="VARCHAR" property="subjectName" />
+    <result column="courseName" jdbcType="VARCHAR" property="courseName" />
+    <result column="teacherReply" jdbcType="VARCHAR" property="teacherReply" />
+  </resultMap>
+
+
+  
+  <sql id="Base_Column_List">
+    id, objectId, replayContent, replayStatus, status, thumbNum, createdDate, createdBy, 
+    updatedDate, updatedBy, type, userName
+  </sql>
+
+  <select id="getSubjectReplyList" parameterType="java.util.HashMap" resultMap="BaseSubjectListResultMap">
+    SELECT
+      tr.id,
+      tr.objectId,
+      tr.replayContent,
+      tr.replayStatus,
+      case tr.replayStatus when '0' then '未回复' when '1' then '已回复' else '' end as replayStatusStr,
+      tr.STATUS,
+      case tr.STATUS when '0' then '未发布' when '1' then '已发布' else '' end as statusStr,
+      IFNULL( tr.thumbNum, 0 ) AS thumbNum,
+      tr.createdDate,
+      tr.createdBy,
+      tr.updatedDate,
+      tr.updatedBy,
+      tr.type,
+      tr.userName,
+      tr.teacherReply,
+      aub.nickName,
+      aub.profileUrl,
+      ts.subjectName,
+      '' as courseName
+    FROM
+      t_reply tr,
+      app_user_base aub,
+      t_subject ts
+    WHERE 1 = 1
+    AND tr.userName = aub.userName
+    AND tr.objectId = ts.id
+    AND tr.type = '0'
+    <if test="teacherId != null and teacherId != ''">
+      and ts.teacherId = #{teacherId,jdbcType=VARCHAR}
+    </if>
+	ORDER BY
+	    id DESC
+  </select>
+
+  <select id="getCourseReplyList" parameterType="java.util.HashMap" resultMap="BaseListResultMap">
+    SELECT
+    tr.id,
+    tr.objectId,
+    tr.replayContent,
+    tr.replayStatus,
+    case tr.replayStatus when '0' then '未回复' when '1' then '已回复' else '' end as replayStatusStr,
+    tr.STATUS,
+    case tr.STATUS when '0' then '未发布' when '1' then '已发布' else '' end as statusStr,
+    IFNULL( tr.thumbNum, 0 ) AS thumbNum,
+    tr.createdDate,
+    tr.createdBy,
+    tr.updatedDate,
+    tr.updatedBy,
+    tr.type,
+    tr.userName,
+    tr.teacherReply,
+    aub.nickName,
+    aub.profileUrl,
+    ts.subjectName,
+    tc.courseName
+    FROM
+    t_reply tr,
+    app_user_base aub,
+    t_subject ts,
+    t_user tu,
+    t_course tc
+    WHERE
+    1 = 1
+    AND tr.userName = aub.userName
+    AND tr.objectId = tc.id
+    AND tc.subjectId = ts.id
+    AND ts.teacherId = tu.id
+    AND tr.type = '1'
+    <if test="userName != null and userName != ''">
+      and tu.userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    ORDER BY
+    id DESC
+  </select>
+
+  <select id="getUserReplyList" parameterType="java.util.HashMap" resultMap="BaseListResultMap">
+    SELECT
+    tr.id,
+    tr.objectId,
+    tr.replayContent,
+    tr.replayStatus,
+    tr.STATUS,
+    IFNULL( tr.thumbNum, 0 ) AS thumbNum,
+    tr.createdDate,
+    tr.createdBy,
+    tr.updatedDate,
+    tr.updatedBy,
+    tr.type,
+    tr.userName,
+    aub.nickName,
+    aub.profileUrl
+    FROM
+    t_reply tr,
+    app_user_base aub
+    WHERE
+    1 = 1
+    AND tr.userName = aub.userName
+    AND tr.type = '2'
+    ORDER BY
+    id DESC
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseListResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_reply
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getReplyCount" parameterType="java.lang.Long" resultType="int">
+    SELECT
+        count( tr.id )
+    FROM
+        t_reply tr
+    WHERE
+        tr.objectId = #{subjectId, jdbcType=BIGINT}
+        AND tr.type = '0'
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_reply
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.ReplyDTO">
+    insert into t_reply (id, objectId, replayContent, 
+      replayStatus, status, thumbNum, 
+      createdDate, createdBy, updatedDate, 
+      updatedBy, type, userName
+      )
+    values (#{id,jdbcType=BIGINT}, #{objectId,jdbcType=BIGINT}, #{replayContent,jdbcType=VARCHAR}, 
+      #{replayStatus,jdbcType=CHAR}, #{status,jdbcType=CHAR}, #{thumbNum,jdbcType=DECIMAL}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{userName,jdbcType=VARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.ReplyDTO">
+    insert into t_reply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="objectId != null">
+        objectId,
+      </if>
+      <if test="replayContent != null">
+        replayContent,
+      </if>
+      <if test="replayStatus != null">
+        replayStatus,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="thumbNum != null">
+        thumbNum,
+      </if>
+      <if test="createdDate != null">
+        createdDate,
+      </if>
+      <if test="createdBy != null">
+        createdBy,
+      </if>
+      <if test="updatedDate != null">
+        updatedDate,
+      </if>
+      <if test="updatedBy != null">
+        updatedBy,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="userName != null">
+        userName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="objectId != null">
+        #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="replayContent != null">
+        #{replayContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replayStatus != null">
+        #{replayStatus,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="thumbNum != null">
+        #{thumbNum,jdbcType=DECIMAL},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null">
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.ReplyDTO">
+    update t_reply
+    <set>
+      <if test="objectId != null">
+        objectId = #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="replayContent != null">
+        replayContent = #{replayContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replayStatus != null">
+        replayStatus = #{replayStatus,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="thumbNum != null">
+        thumbNum = #{thumbNum,jdbcType=DECIMAL},
+      </if>
+      <if test="createdDate != null">
+        createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        createdBy = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null">
+        updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        userName = #{userName,jdbcType=VARBINARY},
+      </if>
+      <if test="teacherReply != null">
+        teacherReply = #{teacherReply,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.audioapp.cms.dto.ReplyDTO">
+    update t_reply
+    set objectId = #{objectId,jdbcType=BIGINT},
+      replayContent = #{replayContent,jdbcType=VARCHAR},
+      replayStatus = #{replayStatus,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      thumbNum = #{thumbNum,jdbcType=DECIMAL},
+      createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      createdBy = #{createdBy,jdbcType=VARCHAR},
+      updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      userName = #{userName,jdbcType=VARBINARY}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.ReplyDTO">
+    update t_reply
+    set objectId = #{objectId,jdbcType=BIGINT},
+      replayContent = #{replayContent,jdbcType=VARCHAR},
+      replayStatus = #{replayStatus,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      thumbNum = #{thumbNum,jdbcType=DECIMAL},
+      createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      createdBy = #{createdBy,jdbcType=VARCHAR},
+      updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

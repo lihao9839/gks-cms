@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <head>
+    <!-- bootstrap-datetimepicker -->
+    <link href="../cms/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="../cms/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../cms/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../cms/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../cms/build/css/custom.css" rel="stylesheet">
+</head>
+
+  <body class="nav-md">
+	<div class="page-title">
+	  <div class="title_left">
+	    <h3>编辑消息</h3>
+	  </div>
+	  <div class="title_right">
+	  	<div class="pull-right">
+	  		<a onclick="goMessage()" class="btn btn-app">
+	  			<i class="fa fa-file"></i>返回
+	  		</a>
+	  	</div>
+	  </div>
+	</div>
+        
+    <div class="clearfix"></div>
+        
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+              <input th:value="${message.id}" id="id" type="hidden">
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">标题 <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input th:value="${message.title}" id="title" type="text" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">内容 <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <textarea th:text="${message.content}"id="content" required="required" class="form-control col-md-7 col-xs-12"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="sendDate" class="control-label col-md-3 col-sm-3 col-xs-12">发送时间</label>
+                <input id="sendDateStr" th:value="${message.sendDateStr}" type="hidden">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class='input-group date' id='myDatepicker'>
+                            <input type='text' class="form-control" id='sendDate'/>
+                            <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="allFlag" class="control-label col-md-3 col-sm-3 col-xs-12">接收人</label>
+              	<div class="checkbox">
+                  <label>
+                    <input id="allFlag"type="checkbox" class="flat" checked="checked"> 全部用户
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">消息通知</label>
+              	<div class="checkbox">
+                  <label>
+                    <input type="checkbox" class="flat" checked="checked"> 通知
+                  </label>
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-5">
+                  	<button class="btn btn-primary" onclick="goMessage()">返回</button>
+                  	<button class="btn btn-success" onclick="updateMessage()">保存</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- bootstrap-datetimepicker -->    
+    <script src="../cms/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- PNotify -->
+    <script src="../cms/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../cms/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../cms/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../cms/build/js/custom.js"></script>
+    <script src="../cms/js/message.js"></script>
+    
+    <script>
+		$('#myDatepicker').datetimepicker();
+		$("#sendDate").val($("#sendDateStr").val());
+	</script>
+	
+  </body>
+</html>

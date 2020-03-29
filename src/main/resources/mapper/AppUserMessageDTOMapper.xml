@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.AppUserMessageDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.AppUserMessageDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="sendDate" jdbcType="TIMESTAMP" property="senddate" />
+    <result column="isVisible" jdbcType="INTEGER" property="isvisible" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createddate" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updateddate" />
+    <result column="isPush" jdbcType="INTEGER" property="ispush" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, content, sendDate, isVisible, userName, createdDate, updatedDate, isPush
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from app_user_message
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from app_user_message
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.AppUserMessageDTO">
+    insert into app_user_message (id, title, content, 
+      sendDate, isVisible, userName, 
+      createdDate, updatedDate, isPush
+      )
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{senddate,jdbcType=TIMESTAMP}, #{isvisible,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
+      #{createddate,jdbcType=TIMESTAMP}, #{updateddate,jdbcType=TIMESTAMP}, #{ispush,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.AppUserMessageDTO">
+    insert into app_user_message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="senddate != null">
+        sendDate,
+      </if>
+      <if test="isvisible != null">
+        isVisible,
+      </if>
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="createddate != null">
+        createdDate,
+      </if>
+      <if test="updateddate != null">
+        updatedDate,
+      </if>
+      <if test="ispush != null">
+        isPush,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="senddate != null">
+        #{senddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isvisible != null">
+        #{isvisible,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="createddate != null">
+        #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateddate != null">
+        #{updateddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ispush != null">
+        #{ispush,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.AppUserMessageDTO">
+    update app_user_message
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="senddate != null">
+        sendDate = #{senddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isvisible != null">
+        isVisible = #{isvisible,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="createddate != null">
+        createdDate = #{createddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateddate != null">
+        updatedDate = #{updateddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ispush != null">
+        isPush = #{ispush,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.AppUserMessageDTO">
+    update app_user_message
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      sendDate = #{senddate,jdbcType=TIMESTAMP},
+      isVisible = #{isvisible,jdbcType=INTEGER},
+      userName = #{username,jdbcType=VARCHAR},
+      createdDate = #{createddate,jdbcType=TIMESTAMP},
+      updatedDate = #{updateddate,jdbcType=TIMESTAMP},
+      isPush = #{ispush,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

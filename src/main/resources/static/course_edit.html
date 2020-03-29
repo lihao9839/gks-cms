@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Switchery -->
+  <link href="../cms/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+  <!-- Dropzone.js -->
+  <link href="../cms/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+  <!-- Custom Theme Style -->
+  <link href="../cms/build/css/custom.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+  <div class="page-title">
+  <div class="title_left">
+    <h3>编辑课程</h3>
+  </div>
+  <div class="title_right">
+    <div class="pull-right">
+      <a onclick="goCourse()" class="btn btn-app">
+        <i class="fa fa-file"></i>返回
+      </a>
+    </div>
+  </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_content">
+          <br />
+          <div data-parsley-validate class="form-horizontal form-label-left">
+            <input type="hidden" id="searchSubjectId" th:value="${searchSubjectId}">
+            <input type="hidden" id="courseId" th:value="${course.id}">
+            <div class="form-group">
+              <label class="control-label col-md-2 col-sm-2 col-xs-12" for="courseTypeAudio">课程类型 : </label>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <p style="padding-top: 7px;">
+                  音频 : <input type="radio" class="flat" name="courseType" id="courseTypeAudio" value="1" checked="" required />
+                  &nbsp;&nbsp;&nbsp;图文 : <input type="radio" class="flat" name="courseType" id="courseTypePic" value="2" />
+                </p>
+              </div>
+              <label for="freeFlag" class="control-label col-md-1 col-sm-1 col-xs-12">可试听</label>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <input th:checked="${course.freeFlag} eq '1'" id="freeFlag" type="checkbox" class="js-switch"
+                  th:disabled="${roleType eq '1'}">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-md-2 col-sm-2 col-xs-12" for="subjectId">所属专栏</label>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <select id="subjectId" class="select2_single form-control" tabindex="-1">
+                  <option th:value="${course.subjectId}" th:text="${course.subjectName}"></option>
+                  <option th:each="subject : ${subjectList}" th:value="${subject.id}" th:text="${subject.subjectName}"></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-md-2 col-sm-2 col-xs-12" for="courseName">标题
+              </label>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <input th:value="${course.courseName}" type="text" id="courseName" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+              </div>
+              <label class="control-label col-md-1 col-sm-1 col-xs-12" for="courseName">排序
+              </label>
+              <div class="col-md-4 col-sm-4 col-xs-12">
+                <input th:value="${course.sort}" type="number" id="sort" name="sort" required="required" class="form-control col-md-7 col-xs-12">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="coursePicDropzone" class="control-label col-md-2 col-sm-2 col-xs-12">封面</label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <div id="coursePicDropzone" class="dropzone"></div>
+                <input type="hidden" id="picUrl" th:value="${course.picUrl}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="courseAudioDropzone" class="control-label col-md-2 col-sm-2 col-xs-12">音频</label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <div id="courseAudioDropzone" class="dropzone"></div>
+                <input type="hidden" id="audioUrl" th:value="${course.audioUrl}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-2 col-sm-2 col-xs-12">正文</label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <div id="editor-one"></div>
+                <input id="courseContent" type="hidden" th:value="${course.courseContent}">
+              </div>
+            </div>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-5">
+                <button class="btn btn-primary" type="button" onclick="goCourse()">返回</button>
+                <button id="btnUpdateCourse" class="btn btn-success" type="button" onclick="updateCourse()">更新</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Switchery -->
+  <script src="../cms/vendors/switchery/dist/switchery.min.js"></script>
+  <!-- Dropzone.js -->
+  <script src="../cms/vendors/dropzone/dist/dropzone.js"></script>
+  <!-- wangEditor-->
+  <script src="../cms/vendors/wangEditor/release/wangEditor.js"></script>
+  <!-- Custom Theme Scripts -->
+  <script src="../cms/build/js/custom.js"></script>
+  <script src="../cms/js/course.js"></script>
+  <script src="../cms/js/course_edit.js"></script>
+</body>
+</html>

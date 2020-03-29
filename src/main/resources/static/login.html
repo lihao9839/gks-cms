@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>高考说-内容管理系统</title>
+
+    <!-- Bootstrap -->
+    <link href="../cms/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../cms/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../cms/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="../cms/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="../cms/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../cms/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../cms/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    
+    <!-- Custom Theme Style -->
+    <link href="../cms/build/css/custom.css" rel="stylesheet">
+</head>
+
+  <body class="login">
+    <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <section class="login_content">
+            <form>
+              <h1> 萌 涯 高 考 说</h1>
+              <div>
+                <input id="userName" type="text" class="form-control" placeholder="用户名" required="" />
+              </div>
+              <div>
+                <input id="password" type="password" class="form-control" placeholder="密码" required="" />
+              </div>
+              <div>
+                <a class="btn btn-default submit" onclick="login()">登录</a>
+                <a href="#signup" class="btn btn-default submit" >修改密码</a>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <h1><i class="fa fa-paw"></i> 内容管理系统</h1>
+                  <p>Copyright ©2018 深圳市萌涯科技有限公司</p>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div id="register" class="animate form registration_form">
+          <section class="login_content">
+            <form>
+              <h1>修改密码</h1>
+              <div>
+                <input id="updateUserName" type="text" class="form-control" placeholder="用户名" required="" />
+              </div>
+              <div>
+                <input id="updatePassword" type="password" class="form-control" placeholder="旧密码" required="" />
+              </div>
+              <div>
+                <input id="updateNewPassword" type="password" class="form-control" placeholder="新密码" required="" />
+              </div>
+              <div>
+                <input id="updateConfirmNewPassword" type="password" class="form-control" placeholder="确认新密码" required="" />
+              </div>
+              <div>
+                <a class="btn btn-default submit" onclick="updateUserPassword()">确认</a>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                <p class="change_link">转到
+                  <a href="#signin" class="to_register"> 登录 </a>
+                </p>
+
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <h1><i class="fa fa-paw"></i> 内容管理系统</h1>
+                  <p>Copyright ©2018 深圳市萌涯科技有限公司</p>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+    
+    <!-- jQuery -->
+    <script src="../cms/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../cms/js/login.js"></script>
+    
+    <!-- PNotify -->
+    <script src="../cms/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../cms/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../cms/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+  </body>
+</html>

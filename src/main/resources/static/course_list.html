@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body class="nav-md">
+  	<div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>课程管理</h3>
+          </div>
+          <div class="title_right">
+          	<div class="pull-right">
+                <a onclick="goCourse()" class="btn btn-app">
+                  <i class="fa fa-refresh"></i>刷新
+                </a>
+          		<a onclick="goAddCourse()" class="btn btn-app">
+                  <i class="fa fa-file"></i>新增
+          		</a>
+          	</div>
+          </div>
+        </div>
+        
+        <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>查询条件</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+              <div id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <div class="form-group">
+                  <label class="control-label col-md-1 col-sm-1 col-xs-12 col-md-offset-3" for="searchSubjectId">所属专栏</label>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <select id="searchSubjectId" class="select2_single form-control" tabindex="-1">
+                      <option th:value="${searchSubjectId}" th:text="${searchSubjectName}"></option>
+                      <option th:each="subject : ${subjectList}" th:value="${subject.id}" th:text="${subject.subjectName}" th:if="${subject.id} ne ${searchSubjectId}"></option>
+                    </select>
+                  </div>
+                </div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                  <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-5">
+                    <button class="btn btn-primary" onclick="resetSearch()">重置</button>
+                    <button class="btn btn-success" onclick="goCourse()">查询</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+    	<div class="row">
+    		<div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+              	<h2>课程列表</h2>
+			  	<div class="clearfix"></div>
+              </div>
+              
+              <div class="x_content">
+                <table id="datatable" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>课程名称</th>
+                      <th>专栏名称</th>
+                      <th>主讲人</th>
+                      <th>创建日期</th>
+                      <th>发布状态</th>
+                      <th>发布日期</th>
+                      <th>排序</th>
+                      <th>课程操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="courseListDTO : ${courseList}">
+                      <td th:text="${courseListDTO.courseName}"></td>
+                      <td th:text="${courseListDTO.subjectName}"></td>
+                      <td th:text="${courseListDTO.realName}"></td>
+                      <td th:text="${courseListDTO.createdDateStr}"></td>
+                      <td th:text="${courseListDTO.statusStr}"></td>
+                      <td th:text="${courseListDTO.publishDateStr}"></td>
+                      <td th:text="${courseListDTO.sort}"></td>
+                      <td>
+                        <!-- 待发布 -->
+                        <a th:if="${courseListDTO.status} == '0'" th:onclick="'javascript:inspectCourse(\''+ ${courseListDTO.id}+'\')'" class="btn btn-primary  btn-xs"><i class="fa fa-search"></i> 查看</a>
+                        <a th:if="${courseListDTO.status} == '0'" th:onclick="'javascript:editCourse(\''+ ${courseListDTO.id}+'\')'" class="btn btn-info  btn-xs"><i class="fa fa-pencil"></i> 编辑</a>
+                        <a th:if="${courseListDTO.status} == '0'" th:onclick="'javascript:publishCourse(\''+ ${courseListDTO.id}+'\')'" class="btn btn-success btn-xs"><i class="fa fa-toggle-on"></i> 发布</a>
+                        <a th:if="${courseListDTO.status} == '0'" th:onclick="'javascript:deleteCourse(\''+ ${courseListDTO.id}+'\')'" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> 删除</a>
+                        <!-- 已发布 -->
+                        <a th:if="${courseListDTO.status} == '1'" th:onclick="'javascript:inspectCourse(\''+ ${courseListDTO.id}+'\')'" class="btn btn-primary  btn-xs"><i class="fa fa-search"></i> 查看</a>
+                        <a th:if="${courseListDTO.status} == '1'" th:onclick="'javascript:offlineCourse(\''+ ${courseListDTO.id}+'\')'" class="btn btn-warning  btn-xs"><i class="fa fa-minus-circle"></i> 下架</a>
+                        <a th:if="${courseListDTO.status} == '1'" th:onclick="'javascript:deleteCourse(\''+ ${courseListDTO.id}+'\')'" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> 删除</a>
+                        <!-- 已删除 -->
+                        <a th:if="${courseListDTO.status} == '2'" th:onclick="'javascript:fallbackCourse(\''+ ${courseListDTO.id}+'\')'" class="btn btn-success btn-xs"><i class="fa fa-mail-reply"></i> 恢复</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            </div>
+        </div>
+    </div>
+	<script src="../cms/js/course.js"></script>
+  </body>
+</html>

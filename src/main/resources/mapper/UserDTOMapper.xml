@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.UserDTOMapper">
+  <resultMap id="BaseResultMap" type="com.audioapp.cms.dto.UserDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="realName" jdbcType="VARCHAR" property="realName" />
+    <result column="roleType" jdbcType="CHAR" property="roleType" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+  </resultMap>
+  
+  <resultMap id="BaseResultListMap" type="com.audioapp.cms.dto.UserListDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="userName" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="realName" jdbcType="VARCHAR" property="realName" />
+    <result column="roleType" jdbcType="CHAR" property="roleType" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="createdDate" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="createdBy" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updatedDate" jdbcType="TIMESTAMP" property="updatedDate" />
+    <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="roleTypeStr" jdbcType="VARCHAR" property="roleTypeStr" />
+    <result column="statusStr" jdbcType="VARCHAR" property="statusStr" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, userName, password, realName, roleType, status, createdDate, createdBy, updatedDate, 
+    updatedBy
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where userName = #{userName, jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getUserList" parameterType="map" resultMap="BaseResultListMap">
+    select 
+    <include refid="Base_Column_List" />
+    , case roleType when '0' then '管理员' when '1' then '讲师' else '' end as roleTypeStr
+    , case status when '0' then '关' when '1' then '开' else '' end as statusStr
+    from t_user
+    where 1 = 1
+    <if test="userName != null">
+     and userName = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="realName != null">
+	 and realName = #{realName,jdbcType=VARCHAR}
+	</if>
+	<if test="roleType != null">
+	 and roleTyp = #{roleType,jdbcType=CHAR}
+	</if>
+	<if test="status != null">
+	 and status = #{status,jdbcType=CHAR}
+	</if>
+	order by id desc
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.audioapp.cms.dto.UserDTO">
+    insert into t_user (id, userName, password, 
+      realName, roleType, status, 
+      createdDate, createdBy, updatedDate, 
+      updatedBy)
+    values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{roleType,jdbcType=CHAR}, #{status,jdbcType=CHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.audioapp.cms.dto.UserDTO">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        userName,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="realName != null">
+        realName,
+      </if>
+      <if test="roleType != null">
+        roleType,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createdDate != null">
+        createdDate,
+      </if>
+      <if test="createdBy != null">
+        createdBy,
+      </if>
+      <if test="updatedDate != null">
+        updatedDate,
+      </if>
+      <if test="updatedBy != null">
+        updatedBy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null">
+        #{roleType,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null">
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.audioapp.cms.dto.UserDTO">
+    update t_user
+    <set>
+      <if test="userName != null">
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        realName = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null">
+        roleType = #{roleType,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createdDate != null">
+        createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        createdBy = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null">
+        updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updatedBy = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.audioapp.cms.dto.UserDTO">
+    update t_user
+    set userName = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      realName = #{realName,jdbcType=VARCHAR},
+      roleType = #{roleType,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      createdDate = #{createdDate,jdbcType=TIMESTAMP},
+      createdBy = #{createdBy,jdbcType=VARCHAR},
+      updatedDate = #{updatedDate,jdbcType=TIMESTAMP},
+      updatedBy = #{updatedBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

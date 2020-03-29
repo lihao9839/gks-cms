@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.audioapp.cms.mapper.DataMapper">
+
+	<select id="getYesNewUsers" parameterType="Map" resultType="int">
+		SELECT
+		count( aub.id )
+		FROM
+		app_user_base aub
+		WHERE
+		1 = 1
+		AND aub.createDate &gt;= #{yesStartDate, jdbcType=TIMESTAMP}
+		AND aub.createDate &lt;= #{yesEndDate, jdbcType=TIMESTAMP}
+  	</select>
+
+	<select id="getActUsers" parameterType="Map" resultType="int">
+		SELECT
+		count( DISTINCT id )
+		FROM
+		app_action_log aal
+		WHERE
+		1 = 1
+		and aal.actionType = 1
+		<if test="startDate != null">
+			and aal.actionTime &gt;= #{startDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDate != null">
+			and aal.actionTime &lt;= #{endDate,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+
+	<select id="getYesSubAmt" parameterType="Map" resultType="int">
+		SELECT
+			IFNULL( sum( aos.totalAmount ), 0 )
+		FROM
+			app_order_success aos
+		WHERE
+		1 = 1
+		AND aos.createDate &gt;= #{yesStartDate, jdbcType=TIMESTAMP}
+		AND aos.createDate &lt;= #{yesEndDate, jdbcType=TIMESTAMP}
+	</select>
+
+	<select id="getTotalUsers" resultType="int">
+		SELECT
+			count( aub.id )
+		FROM
+			app_user_base aub
+		WHERE
+		1 = 1
+		<if test="type != null and type == 'app'">
+			and aub.registerType = 0
+		</if>
+		<if test="type != null and type == 'h5'">
+			and aub.registerType = 1
+		</if>
+		<if test="startDate != null">
+			and aub.createDate &gt;= #{startDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDate != null">
+			and aub.createDate &lt;= #{endDate,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+
+	<select id="getTotalAmt" resultType="int">
+		SELECT
+		IFNULL( sum( aos.totalAmount ), 0 )
+		FROM
+		app_order_success aos
+	</select>
+
+	<select id="getTotalList" parameterType="Map" resultType="Map">
+		select count(aub.id) from app_user_base aub
+	</select>
+
+	<select id="getSubInfo" parameterType="Map" resultType="Map">
+		SELECT
+			count( DISTINCT aos.userName ) AS userCount,
+			count( aos.orderId) as orderCount,
+			ifnull( SUM( aos.totalAmount ), 0 ) AS amtCount
+		FROM
+			app_order_success aos
+		WHERE 1=1 and aos.tradeTime is not null
+		<if test="startDate != null">
+			and aos.createDate &gt;= #{startDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDate != null">
+			and aos.createDate &lt;= #{endDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="subjectId != null">
+			and aos.subjectId = #{subjectId,jdbcType=BIGINT}
+		</if>
+	</select>
+
+
+	<select id="getLearnTimes" parameterType="Map" resultType="int">
+		SELECT
+		count( acs.id )
+		FROM
+		app_course_study acs
+		LEFT JOIN t_course tc ON tc.id = acs.courseId
+		WHERE
+		1 =1
+		<if test="startDate != null">
+			and acs.createDate &gt;= #{startDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDate != null">
+			and acs.createDate &lt;= #{endDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="subjectId != null">
+			and tc.subjectId = #{subjectId,jdbcType=BIGINT}
+		</if>
+		<if test="courseId != null">
+			and tc.id = #{courseId,jdbcType=BIGINT}
+		</if>
+	</select>
+
+	<select id="getSubjectShareCount" parameterType="long" resultType="int">
+		SELECT
+			count( ass.id )
+		FROM
+			app_subject_share ass
+		WHERE
+			ass.subjectId = #{subjectId,jdbcType=BIGINT}
+	</select>
+
+	<select id="getCourseShareCount" parameterType="Map" resultType="int">
+		SELECT
+			count( acs.id )
+		FROM
+			app_course_share acs LEFT JOIN t_course tc on tc.id = acs.courseId
+		WHERE
+		  	1 = 1
+		<if test="subjectId != null">
+			and tc.subjectId = #{subjectId,jdbcType=BIGINT}
+		</if>
+		<if test="courseId != null">
+			and tc.id = #{courseId,jdbcType=BIGINT}
+		</if>
+	</select>
+
+	<select id="getCourseThumbsupCnt" parameterType="long" resultType="int">
+		SELECT
+			count( tc.id )
+		FROM
+			t_collection tc
+		WHERE
+			tc.courseId = #{courseId,jdbcType=BIGINT}
+	</select>
+
+	<select id="getFreeCourseCnt" parameterType="long" resultType="int">
+	SELECT
+		count( te.id )
+	FROM
+		t_exchange te
+	WHERE
+		te.courseId = #{courseId,jdbcType=BIGINT}
+	</select>
+
+	<select id="getOpenCnt" parameterType="Map" resultType="Map">
+		SELECT
+		count( aal.action ) AS cnt,
+		count( DISTINCT aal.userName ) userCnt
+		FROM
+		app_action_log aal
+		WHERE
+		1 = 1
+		<if test="actionType != null">
+			and aal.actionType = #{actionType,jdbcType=BIGINT}
+		</if>
+		<if test="startDate != null">
+			and aal.createDate &gt;= #{startDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endDate != null">
+			and aal.createDate &lt;= #{endDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="subjectId != null">
+			and aal.objectId = #{subjectId,jdbcType=BIGINT}
+		</if>
+	</select>
+
+</mapper>

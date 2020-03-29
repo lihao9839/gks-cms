@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+  <head>
+    <!-- Dropzone.js -->
+    <link href="../cms/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../cms/build/css/custom.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="../cms/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../cms/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../cms/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+</head>
+
+  <body class="nav-md">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>分享和二维码</h3>
+      </div>
+    </div>
+    
+    <div class="clearfix"></div>
+
+	<div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_content">
+            <br />
+            <div data-parsley-validate class="form-horizontal form-label-left">
+              <input type="hidden" id="shareId" th:value="${pic.id}">
+              <div class="form-group">
+                <label for="shareDropzone" class="control-label col-md-2 col-sm-2 col-xs-12">分享图片</label>
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                  <div id="shareDropzone" class="dropzone"></div>
+                  <input type="hidden" id="sharePicUrl" th:value="${pic.picUrl}">
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-6">
+                  <button id="addShare" class="btn btn-success" type="button" onclick="addOrUpdateSharePic()">新增</button>
+                  <button id="updateShare" style="display:none;" class="btn btn-success" type="button" onclick="addOrUpdateSharePic()">更新</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>   
+    <!-- PNotify -->
+    <script src="../cms/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../cms/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../cms/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    <!-- Dropzone.js -->
+    <script src="../cms/vendors/dropzone/dist/dropzone.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../cms/build/js/custom.js"></script>
+    <script src="../cms/js/share.js"></script>
+  </body>
+</html>
