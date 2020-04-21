@@ -17,12 +17,7 @@ logging:
 
 spring:
   datasource:
-    #url: jdbc:mysql://rm-wz9953149z266rk0n.mysql.rds.aliyuncs.com:3306/gks?characterEncoding=utf8&useSSL=true
-    #username: gksadmin
-    #password: Gaokaoshuo168
     url: jdbc:mysql://rm-8vb3oj86ge622d1p3po.mysql.zhangbei.rds.aliyuncs.com:3306/audio_app?characterEncoding=utf8&useSSL=true
-    username: audioopr
-    password: 1qaz!QAZ
     driver-class-name: com.mysql.jdbc.Driver
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
@@ -37,10 +32,6 @@ spring:
     content-type: text/html
 
   redis:
-    #host: r-wz9f232c68e519b4.redis.rds.aliyuncs.com
-    #password: Gaokaoshuo168
-    host: 47.92.238.6
-    password: Gaokaoshuo168
     timeout: 10000
     database: 0
     port: 6379
@@ -55,11 +46,4 @@ spring:
       maxFileSize: 100Mb
       maxRequestSize: 100Mb
 
-inipassword: abcd1234
-
-aliyun:
-  endpoint: oss-cn-zhangjiakou.aliyuncs.com
-  accessKeyId: U2mQnrkbisfl2vNB
-  accessKeySecret: Uhapcb7yrn6Mp4atqTQHKswueliTJb
-  bucketName: bclh
-  appKey: 27695158
+inipassword: xxx
